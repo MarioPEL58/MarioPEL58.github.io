@@ -62,9 +62,25 @@
         .launch-btn:active {
             transform: translateY(-1px);
         }
+        
+        /* Gestione per smartphone: sposta l'immagine sopra il testo per non sovrapporsi */
+        @media (max-width: 600px) {
+            html, body {
+                flex-direction: column;
+                height: auto;
+                padding: 40px 0;
+            }
+            .profile-img {
+                position: static;
+                margin-bottom: 20px;
+            }
+        }
     </style>
 </head>
 <body>
+    
+    <!-- L'immagine ora usa il percorso esatto della tua cartella -->
+    <img src="immagini/Pem_Image_canale.png" alt="Foto di MarioPEL58" class="profile-img">
 
     <div class="container">
         <h1>Benvenuto nel mio spazio web</h1>
