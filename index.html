@@ -5,13 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MarioPEL58 Portfolio</title>
     <style>
-        /* Centra tutto il contenuto verticalmente e orizzontalmente */
+        /* Struttura base ad altezza intera */
         html, body {
             margin: 0;
             padding: 0;
             width: 100%;
-            min-height: 100vh; /* Sostituito height con min-height per gestire i contenuti lunghi */
+            min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             background-color: #0f172a; /* Sfondo scuro moderno */
@@ -20,26 +21,25 @@
             text-align: center;
         }
 
-        .container {
-            padding: 40px 20px;
-            max-width: 800px; /* Evita che il contenuto si allarghi troppo su schermi grandi */
+        /* BARRA DI INTESTAZIONE: Contiene lingua e profilo senza sovrapposizioni */
+        .header-bar {
+            width: 100%;
+            max-width: 800px;
             display: flex;
-            flex-direction: column;
+            justify-content: space-between; /* Spinge la lingua a sinistra e il profilo a destra */
             align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
         }
         
-        /* SELETTORE DI LINGUA IN ALTO A SINISTRA */
+        /* SELETTORE DI LINGUA */
         .lang-switch {
-            position: absolute;
-            top: 25px;
-            left: 25px;
             background: #1e293b;
             border: 1px solid #334155;
             padding: 8px 16px;
             border-radius: 20px;
             display: flex;
             gap: 10px;
-            z-index: 10;
         }
 
         .lang-btn {
@@ -53,20 +53,27 @@
         }
 
         .lang-btn.active {
-            color: #38bdf8; /* Colore azzurro attivo */
+            color: #38bdf8; /* Azzurro attivo */
         }
         
-        /* IMMAGINE POSIZIONATA IN ALTO A DESTRA */
+        /* IMMAGINE PROFILO */
         .profile-img {
-            position: absolute;    /* Blocca l'immagine in una posizione fissa */
-            top: 20px;             /* Distanza dal bordo superiore */
-            right: 20px;           /* Distanza dal bordo destro */
-            width: 150px;          /* Ridotta a 150px: 360px occupava troppo spazio nell'angolo */
-            height: 150px;          
-            border-radius: 30%;    /* Taglio tondo */
+            width: 120px;          
+            height: 120px;          
+            border-radius: 30%;
             object-fit: cover;     
-            border: 2px solid #38bdf8; /* Bordo azzurro coordinato */
+            border: 2px solid #38bdf8;
             box-shadow: 0 4px 15px rgba(56, 189, 248, 0.2);
+        }
+
+        /* CONTENITORE PRINCIPALE (Testi e Video) */
+        .container {
+            padding: 20px;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-sizing: border-box;
         }
         
         h1 {
@@ -82,10 +89,10 @@
             margin-bottom: 25px;
         }
 
-        /* STILE DEL VIDEO / ANTEPRIMA GIF */
+        /* VIDEO */
         .app-preview {
             width: 100%;
-            max-width: 640px; /* Dimensione ideale per mostrare l'app Streamlit */
+            max-width: 640px;
             border-radius: 12px;
             border: 1px solid #334155;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
@@ -93,10 +100,10 @@
             background-color: #1e293b;
         }
 
-        /* Stile del pulsante di lancio */
+        /* PULSANTE AVVIO */
         .launch-btn {
             display: inline-block;
-            background-color: #38bdf8; /* Colore azzurro Streamlit */
+            background-color: #38bdf8;
             color: #0f172a;
             font-weight: 600;
             font-size: 1.2rem;
@@ -107,57 +114,45 @@
             transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
-        /* Effetto al passaggio del mouse */
         .launch-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 15px 30px rgba(56, 189, 248, 0.4);
             background-color: #7dd3fc;
         }
 
-        /* Effetto al click */
         .launch-btn:active {
             transform: translateY(-1px);
         }
         
-        /* Gestione per smartphone: sposta l'immagine sopra il testo per non sovrapporsi */
-        @media (max-width: 768px) {
-            html, body {
-                flex-direction: column;
-                height: auto;
-                padding: 80px 0 40px 0; /* Spazio extra in alto per non coprire il selettore lingua */
+        /* Ottimizzazione per Smartphone */
+        @media (max-width: 600px) {
+            .header-bar {
+                flex-direction: column-reverse; /* Mette l'immagine sopra i pulsanti lingua */
+                gap: 15px;
             }
-            .profile-img {
-                position: static;
-                margin-bottom: 20px;
-                width: 180px;
-                height: 180px;
-            }
-            .lang-switch {
-                top: 15px;
-                left: 50%;
-                transform: translateX(-50%); /* Centra i tasti lingua su schermi piccoli */
+            h1 {
+                font-size: 2rem;
             }
         }
     </style>
 </head>
 <body>
     
-    <!-- Selettore Lingua Interattivo -->
-    <div class="lang-switch">
-        <button class="lang-btn active" onclick="setLanguage('it')">IT</button>
-        <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+    <!-- Nuova barra superiore che organizza gli elementi in modo sicuro -->
+    <div class="header-bar">
+        <div class="lang-switch">
+            <button class="lang-btn active" onclick="setLanguage('it')">IT</button>
+            <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+        </div>
+        <img src="immagini/Pem_Image_canale.png" alt="Foto di MarioPEL58" class="profile-img">
     </div>
 
-    <!-- L'immagine del profilo -->
-    <img src="immagini/Pem_Image_canale.png" alt="Foto di MarioPEL58" class="profile-img">
-
+    <!-- Contenuto centrale -->
     <div class="container">
-        <!-- Testi mappati con i rispettivi attributi di traduzione -->
         <h1 data-it="Benvenuto nel mio spazio web" data-en="Welcome to my web space">Benvenuto nel mio spazio web</h1>
         
         <p data-it="Scopri come funziona la mia applicazione Python per la gestione del portafoglio" data-en="Discover how my Python portfolio management application works">Scopri come funziona la mia applicazione Python per la gestione del portafoglio</p>
         
-        <!-- Video MP4 con caricamento automatico e muto forzato -->
         <video class="app-preview" autoplay loop muted playsinline controls preload="auto">
             <source src="video/Video.mp4" type="video/mp4">
             Il tuo browser non supporta i video HTML5.
@@ -165,20 +160,17 @@
 
         <p data-it="Clicca sul pulsante qui sotto per avviarla ed inserire i tuoi dati" data-en="Click the button below to launch it and enter your data">Clicca sul pulsante qui sotto per avviarla ed inserire i tuoi dati</p>
         
-        <a href="https://portfolio-app-7onxevmw2oxqpjxldpbqxg.streamlit.app/" target="_self" class="launch-btn" data-it="Avvia l'Applicazione 🚀" data-en="Launch Application 🚀">
+        <a href="https://streamlit.app" target="_self" class="launch-btn" data-it="Avvia l'Applicazione 🚀" data-en="Launch Application 🚀">
             Avvia l'Applicazione 🚀
         </a>
     </div>
 
     <script>
-        // Funzione logica per cambiare i testi dinamicamente
         function setLanguage(lang) {
-            // Seleziona tutti gli elementi con l'attributo data-it
             document.querySelectorAll('[data-it]').forEach(el => {
                 el.innerHTML = el.getAttribute('data-' + lang);
             });
 
-            // Gestione estetica dei pulsanti attivo/inattivo
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
             if(lang === 'it') {
                 document.querySelector("button[onclick*='it']").classList.add('active');
@@ -189,13 +181,12 @@
             document.documentElement.lang = lang;
         }
 
-        // Intercetta la lingua nativa del sistema dell'utente all'avvio
         window.addEventListener('DOMContentLoaded', () => {
             const userLang = navigator.language || navigator.userLanguage; 
             if (userLang.startsWith('en')) {
                 setLanguage('en');
             } else {
-                setLanguage('it'); // Impostazione predefinita in Italiano
+                setLanguage('it');
             }
         });
     </script>
