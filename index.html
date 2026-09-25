@@ -28,6 +28,34 @@
             align-items: center;
         }
         
+        /* SELETTORE DI LINGUA IN ALTO A SINISTRA */
+        .lang-switch {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            background: #1e293b;
+            border: 1px solid #334155;
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .lang-btn.active {
+            color: #38bdf8; /* Colore azzurro attivo */
+        }
+        
         /* IMMAGINE POSIZIONATA IN ALTO A DESTRA */
         .profile-img {
             position: absolute;    /* Blocca l'immagine in una posizione fissa */
@@ -96,7 +124,7 @@
             html, body {
                 flex-direction: column;
                 height: auto;
-                padding: 40px 0;
+                padding: 80px 0 40px 0; /* Spazio extra in alto per non coprire il selettore lingua */
             }
             .profile-img {
                 position: static;
@@ -104,34 +132,72 @@
                 width: 180px;
                 height: 180px;
             }
+            .lang-switch {
+                top: 15px;
+                left: 50%;
+                transform: translateX(-50%); /* Centra i tasti lingua su schermi piccoli */
+            }
         }
     </style>
 </head>
 <body>
     
+    <!-- Selettore Lingua Interattivo -->
+    <div class="lang-switch">
+        <button class="lang-btn active" onclick="setLanguage('it')">IT</button>
+        <button class="lang-btn" onclick="setLanguage('en')">EN</button>
+    </div>
+
     <!-- L'immagine del profilo -->
     <img src="immagini/Pem_Image_canale.png" alt="Foto di MarioPEL58" class="profile-img">
 
     <div class="container">
-        <h1>Benvenuto nel mio spazio web</h1>
-        <p>Scopri come funziona la mia applicazione Python per la gestione del portafoglio</p>
+        <!-- Testi mappati con i rispettivi attributi di traduzione -->
+        <h1 data-it="Benvenuto nel mio spazio web" data-en="Welcome to my web space">Benvenuto nel mio spazio web</h1>
         
-        <!-- OPZIONE VIDEO MP4 (Consigliata) -->
-        <!-- Sostituisci "video/demo.mp4" con il percorso esatto del tuo file video -->
+        <p data-it="Scopri come funziona la mia applicazione Python per la gestione del portafoglio" data-en="Discover how my Python portfolio management application works">Scopri come funziona la mia applicazione Python per la gestione del portafoglio</p>
+        
+        <!-- Video MP4 con caricamento automatico e muto forzato -->
         <video class="app-preview" autoplay loop muted playsinline controls preload="auto">
             <source src="video/Video.mp4" type="video/mp4">
             Il tuo browser non supporta i video HTML5.
         </video>
 
-        <!-- OPZIONE GIF (Rimuovi i commenti sotto e cancella il tag <video> se preferisci la GIF) -->
-        <!-- <img src="immagini/nome_della_tua_gif.gif" alt="Anteprima App" class="app-preview"> -->
-
-        <p>Clicca sul pulsante qui sotto per avviarla ed inserire i tuoi dati</p>
+        <p data-it="Clicca sul pulsante qui sotto per avviarla ed inserire i tuoi dati" data-en="Click the button below to launch it and enter your data">Clicca sul pulsante qui sotto per avviarla ed inserire i tuoi dati</p>
         
-        <a href="https://portfolio-app-7onxevmw2oxqpjxldpbqxg.streamlit.app/" target="_self" class="launch-btn">
+        <a href="https://portfolio-app-7onxevmw2oxqpjxldpbqxg.streamlit.app/" target="_self" class="launch-btn" data-it="Avvia l'Applicazione 🚀" data-en="Launch Application 🚀">
             Avvia l'Applicazione 🚀
         </a>
     </div>
 
+    <script>
+        // Funzione logica per cambiare i testi dinamicamente
+        function setLanguage(lang) {
+            // Seleziona tutti gli elementi con l'attributo data-it
+            document.querySelectorAll('[data-it]').forEach(el => {
+                el.innerHTML = el.getAttribute('data-' + lang);
+            });
+
+            // Gestione estetica dei pulsanti attivo/inattivo
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            if(lang === 'it') {
+                document.querySelector("button[onclick*='it']").classList.add('active');
+            } else {
+                document.querySelector("button[onclick*='en']").classList.add('active');
+            }
+
+            document.documentElement.lang = lang;
+        }
+
+        // Intercetta la lingua nativa del sistema dell'utente all'avvio
+        window.addEventListener('DOMContentLoaded', () => {
+            const userLang = navigator.language || navigator.userLanguage; 
+            if (userLang.startsWith('en')) {
+                setLanguage('en');
+            } else {
+                setLanguage('it'); // Impostazione predefinita in Italiano
+            }
+        });
+    </script>
 </body>
 </html>
